@@ -10,6 +10,7 @@ export default function Details() {
   const [photo, setPhoto] = useState(null);
   const userSignatureRef = useRef(null);
   const [signature, setSignature] = useState(false);
+  const [finalImage, setFinalImage] = useState(null);
 
   const startCamera = async () => {
     try {
@@ -68,6 +69,34 @@ export default function Details() {
   const stopDrawing = () => {
     setSignature(false);
   };
+  const mergeImages = () => {
+    const signatureCanvas = userSignatureRef.current;
+
+    const img = new Image();
+    img.src = photo;
+
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      ctx.drawImage(img, 0, 0);
+      const sigWidth = signatureCanvas.width;
+      const sigHeight = signatureCanvas.height;
+
+      const x = canvas.width - sigWidth - 20;
+      const y = canvas.height - sigHeight - 20;
+
+      ctx.drawImage(signatureCanvas, x, y);
+
+
+      const merged = canvas.toDataURL("image/png");
+
+      setFinalImage(merged);
+    };
+  };
 
   return (
     <div className="main-div flex w-full h-screen bg-amber-100 justify-center items-center">
@@ -100,9 +129,15 @@ export default function Details() {
           >
             Capture Photo
           </button>
+          <button
+            onClick={mergeImages}
+            className="mt-4 p-3 rounded-2xl text-xl bg-purple-400 text-white"
+          >
+            Merge Photo & Signature
+          </button>
         </div>
       </div>
-      <div className="ml-11 ">
+      <div className="ml-11 border-r-2 p-20">
         <canvas ref={canvasRef} className="hidden"></canvas>
 
         <h2 className="mb-2 text-2xl font-semibold text-center">Sign Below</h2>
@@ -122,6 +157,14 @@ export default function Details() {
           />
         </div>
       </div>
+      {finalImage && (
+        <div className="ml-10">
+          <h2 className="mb-2 text-2xl font-semibold text-center">
+            Final Audit Image
+          </h2>
+          <img src={finalImage} alt="Final Result" className="w-96 border" />
+        </div>
+      )}
     </div>
   );
 }
