@@ -11,13 +11,14 @@ export default function Details() {
   const userSignatureRef = useRef(null);
   const [signature, setSignature] = useState(false);
   const [finalImage, setFinalImage] = useState(null);
+  const streamRef = useRef(null);
 
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
       });
-
+      streamRef.current = stream;
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
@@ -42,6 +43,9 @@ export default function Details() {
     const imageData = canvas.toDataURL("image/png");
 
     setPhoto(imageData);
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+    }
   };
   const startDrawing = (e) => {
     const canvas = userSignatureRef.current;
@@ -159,7 +163,6 @@ export default function Details() {
           />
         </div>
       </div>
-      
     </div>
   );
 }

@@ -22,30 +22,30 @@ export default function Login() {
   };
 
   return (
-    <div className="p-10 flex flex-col items-center justify-center gap-5 bg-amber-200 h-screen">
-      <h1 className="text-2xl  font-semibold">Login</h1>
+    <div className="bg-blue-400 flex items-center flex-col justify-center h-screen bg-[url('./public/login-hero-bg.jpg')]">
+      <div className="p-10 flex flex-col items-center justify-center gap-5 border-2 rounded-2xl bg-white/10 backdrop-blur-lg shadow-xl ">
+        <h1 className="text-3xl  font-semibold  ">Login</h1>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-64">
-        <input
-          type="text"
-          placeholder="Username"
-          className="border p-2"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-64">
+          <input
+            type="text"
+            placeholder="Username"
+            className="border p-2"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-2"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <input
+            type="password"
+            placeholder="Password"
+            className="border p-2"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <button className="bg-blue-500 text-white p-2 rounded">
-          Login
-        </button>
-      </form>
+          <button className="bg-white/10 backdrop-blur-lg font-semibold text-xl text-white px-2 py-3 rounded">Login</button>
+        </form>
+      </div>
     </div>
   );
 }

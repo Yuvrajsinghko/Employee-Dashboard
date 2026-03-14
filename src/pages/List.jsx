@@ -68,7 +68,7 @@ export default function List() {
   }
 
   return (
-    <div className="p-12 text-center ">
+    <div className="p-12 text-center h-screen w-full bg-amber-100 ">
       <h1 className="text-2xl mb-4 font-bold">Employee List</h1>
 
       <div
