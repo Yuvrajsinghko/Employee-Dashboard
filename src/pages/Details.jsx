@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import { useRef, useState } from "react";
 
@@ -9,6 +8,19 @@ export default function Details() {
   const canvasRef = useRef(null);
 
   const [photo, setPhoto] = useState(null);
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+      });
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    } catch (error) {
+      console.log("Camera access error", error);
+    }
+  };
 
   return (
     <div className="p-10 h-screen w-full flex flex-col items-center justify-center bg-amber-100">
@@ -20,11 +32,11 @@ export default function Details() {
         <video
           ref={videoRef}
           autoPlay
-          className="w-[800px] h-96 border object-cover"
+          className="w-100 h-100 object-cover border"
         />
       </div>
 
-      <button className="mt-4 px-4 py-2 rounded-2xl font-semibold bg-blue-400 text-white hover:scale-95">
+      <button  onClick={startCamera}className="mt-4 px-4 py-2 rounded-2xl font-semibold bg-blue-400 text-white hover:scale-95">
         Start Camera
       </button>
     </div>
