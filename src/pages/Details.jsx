@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useRef, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function Details() {
   const { id } = useParams();
 
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-
+  const navigate = useNavigate();
   const [photo, setPhoto] = useState(null);
   const userSignatureRef = useRef(null);
   const [signature, setSignature] = useState(false);
@@ -91,10 +91,12 @@ export default function Details() {
 
       ctx.drawImage(signatureCanvas, x, y);
 
-
       const merged = canvas.toDataURL("image/png");
 
       setFinalImage(merged);
+      navigate("/results", {
+        state: { finalImage: merged },
+      });
     };
   };
 
@@ -157,14 +159,7 @@ export default function Details() {
           />
         </div>
       </div>
-      {finalImage && (
-        <div className="ml-10">
-          <h2 className="mb-2 text-2xl font-semibold text-center">
-            Final Audit Image
-          </h2>
-          <img src={finalImage} alt="Final Result" className="w-96 border" />
-        </div>
-      )}
+      
     </div>
   );
 }

@@ -5,7 +5,6 @@ export default function List() {
   const [loading, setLoading] = useState(true);
   const [scrollTop, setScrollTop] = useState(0);
 
-  // simple constants for virtualization
   const rowHeight = 50;
   const containerHeight = 750;
   const extraRow = 5;
@@ -52,12 +51,10 @@ export default function List() {
     getEmployeesInfo();
   }, []);
 
-  // track scroll position
   const handleScroll = (e) => {
     setScrollTop(e.target.scrollTop);
   };
 
-  // basic virtualization math
   const visibleCount = Math.ceil(containerHeight / rowHeight);
   const startIndex = Math.floor(scrollTop / rowHeight);
   const endIndex = startIndex + visibleCount + extraRow;
