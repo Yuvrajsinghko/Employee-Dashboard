@@ -50,7 +50,6 @@ export default function Result() {
         console.log("error fetching data", error);
       }
     };
-    
 
     fetchData();
   }, []);
@@ -75,6 +74,34 @@ export default function Result() {
       </div>
       <div>
         <h2 className="text-3xl font-medium mb-4">Salary Distribution</h2>
+        <svg width="600" height="320" className="border bg-white p-6">
+          {cityData.map((item, index) => {
+            const maxSalary = Math.max(...cityData.map((c) => c.salary));
+
+            const barHeight = (item.salary / maxSalary) * 200;
+
+            const x = index * 100 + 60;
+            const y = 250 - barHeight;
+
+            const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"];
+
+            return (
+              <g key={index}>
+                <rect
+                  x={x}
+                  y={y}
+                  width="50"
+                  height={barHeight}
+                  fill={colors[index % colors.length]}
+                />
+
+                <text x={x + 25} y={270} textAnchor="middle" fontSize="14">
+                  {item.city}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
       </div>
     </div>
   );
