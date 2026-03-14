@@ -1,10 +1,20 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 export default function Result() {
   const location = useLocation();
   const { finalImage } = location.state || {};
   const [cityData, setCityData] = useState([]);
+  const cityCoordinates = {
+  Tokyo: [35.6762, 139.6503],
+  London: [51.5072, -0.1276],
+  "San Francisco": [37.7749, -122.4194],
+  "New York": [40.7128, -74.006],
+  Edinburgh: [55.9533, -3.1883],
+  Sidney: [-33.8688, 151.2093],
+  Singapore: [1.3521, 103.8198]
+};
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,6 +63,7 @@ export default function Result() {
 
     fetchData();
   }, []);
+  
 
   return (
     <div className="p-12 w-full h-screen bg-amber-100 flex justify-around">
@@ -73,35 +84,60 @@ export default function Result() {
         )}
       </div>
       <div>
-        <h2 className="text-3xl font-medium mb-4">Salary Distribution</h2>
-        <svg width="600" height="320" className="border bg-white p-6">
-          {cityData.map((item, index) => {
-            const maxSalary = Math.max(...cityData.map((c) => c.salary));
+        <div>
+          <h2 className="text-3xl font-medium mb-4">Salary Distribution</h2>
+          <svg width="600" height="320" className="border bg-white p-6">
+            {cityData.map((item, index) => {
+              const maxSalary = Math.max(...cityData.map((c) => c.salary));
 
-            const barHeight = (item.salary / maxSalary) * 200;
+              const barHeight = (item.salary / maxSalary) * 200;
 
-            const x = index * 100 + 60;
-            const y = 250 - barHeight;
+              const x = index * 100 + 60;
+              const y = 250 - barHeight;
 
-            const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"];
+              const colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444"];
 
-            return (
-              <g key={index}>
-                <rect
-                  x={x}
-                  y={y}
-                  width="50"
-                  height={barHeight}
-                  fill={colors[index % colors.length]}
-                />
+              return (
+                <g key={index}>
+                  <rect
+                    x={x}
+                    y={y}
+                    width="50"
+                    height={barHeight}
+                    fill={colors[index % colors.length]}
+                  />
 
-                <text x={x + 25} y={270} textAnchor="middle" fontSize="14">
-                  {item.city}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
+                  <text x={x + 25} y={270} textAnchor="middle" fontSize="14">
+                    {item.city}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+        <div>
+          <h2 className="text-3xl font-medium mt-5 mb-4">City Locations</h2>
+
+          <MapContainer
+            center={[20, 0]}
+            zoom={2}
+            style={{ height: "400px", width: "600px" }}
+          >
+            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+            {cityData.map((item, index) => {
+              const coords = cityCoordinates[item.city];
+
+              if (!coords) return null;
+
+              return (
+                <Marker position={coords} key={index}>
+                  <Popup>{item.city}</Popup>
+                </Marker>
+              );
+            })}
+          </MapContainer>
+        </div>
       </div>
     </div>
   );
