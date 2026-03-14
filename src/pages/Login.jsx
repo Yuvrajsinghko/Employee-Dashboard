@@ -22,7 +22,7 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-blue-400 flex items-center flex-col justify-center h-screen bg-[url('./public/login-hero-bg.jpg')]">
+    <div className="bg-blue-400 flex items-center flex-col justify-center h-screen bg-[url('./login-hero-bg.jpg')]">
       <div className="p-10 flex flex-col items-center justify-center gap-5 border-2 rounded-2xl bg-white/10 backdrop-blur-lg shadow-xl ">
         <h1 className="text-3xl  font-semibold  ">Login</h1>
 

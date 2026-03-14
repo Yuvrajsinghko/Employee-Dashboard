@@ -4,6 +4,7 @@ import List from "./pages/List";
 import Details from "./pages/Details";
 import Result from "./pages/Results";
 import ProtectedRoutes from "./components/ProtectedRoutes";
+import Layout from "./components/Layout";
 const App = () => {
   return (
     <Routes>
@@ -13,7 +14,9 @@ const App = () => {
         path="/list"
         element={
           <ProtectedRoutes>
-            <List />
+            <Layout>
+              <List />
+            </Layout>
           </ProtectedRoutes>
         }
       />
@@ -21,7 +24,9 @@ const App = () => {
         path="/details/:id"
         element={
           <ProtectedRoutes>
-            <Details />
+            <Layout>
+              <Details />
+            </Layout>
           </ProtectedRoutes>
         }
       />
@@ -29,7 +34,9 @@ const App = () => {
         path="/results"
         element={
           <ProtectedRoutes>
-            <Result />
+            <Layout>
+              <Result />
+            </Layout>
           </ProtectedRoutes>
         }
       />

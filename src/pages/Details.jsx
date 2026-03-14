@@ -47,6 +47,8 @@ export default function Details() {
       streamRef.current.getTracks().forEach((track) => track.stop());
     }
   };
+  console.log(finalImage);
+  
   const startDrawing = (e) => {
     const canvas = userSignatureRef.current;
     const ctx = canvas.getContext("2d");
