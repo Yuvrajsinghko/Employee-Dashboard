@@ -8,6 +8,8 @@ export default function Details() {
   const canvasRef = useRef(null);
 
   const [photo, setPhoto] = useState(null);
+  const userSignatureRef = useRef(null);
+  const [signature, setSignature] = useState(false);
 
   const startCamera = async () => {
     try {
@@ -39,6 +41,32 @@ export default function Details() {
     const imageData = canvas.toDataURL("image/png");
 
     setPhoto(imageData);
+  };
+  const startDrawing = (e) => {
+    const canvas = userSignatureRef.current;
+    const ctx = canvas.getContext("2d");
+
+    ctx.beginPath();
+    ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+
+    setSignature(true);
+  };
+
+  const draw = (e) => {
+    if (!signature) return;
+
+    const canvas = userSignatureRef.current;
+    const ctx = canvas.getContext("2d");
+
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+
+    ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    setSignature(false);
   };
 
   return (
@@ -77,12 +105,22 @@ export default function Details() {
       <div className="ml-11 ">
         <canvas ref={canvasRef} className="hidden"></canvas>
 
-        {photo && (
-          <div className="mt-6 flex flex-col items-center justify-center gap-5 ">
-            <h2 className="mb-2 font-semibold text-3xl uppercase">Captured Photo</h2>
-            <img src={photo} alt="Captured" className="w-96 border" />
-          </div>
-        )}
+        <h2 className="mb-2 text-2xl font-semibold text-center">Sign Below</h2>
+
+        <div className="relative w-96">
+          <img src={photo} alt="Captured" className="w-96 border" />
+
+          <canvas
+            ref={userSignatureRef}
+            width={384}
+            height={288}
+            className="absolute top-0 left-0"
+            onMouseDown={startDrawing}
+            onMouseMove={draw}
+            onMouseUp={stopDrawing}
+            onMouseLeave={stopDrawing}
+          />
+        </div>
       </div>
     </div>
   );
